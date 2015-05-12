@@ -26,7 +26,7 @@ my %tested;
 my $git_version = eval {git::version};
 $tested{version}++;
 
-plan skip_all => 'Could not get a meaninful result from git::version'
+plan skip_all => 'Could not get a meaningful result from git::version'
     if !$git_version;
 
 diag "Testing <$git_version>";
