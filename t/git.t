@@ -97,7 +97,7 @@ is( $commit, 'b462686c994180efe7fcf5e4e682907834c93f38', 'log' );
 use Git::Sub 'show_branch';
 is_deeply(
     [ git::show_branch '--all' ],
-    [ split /\n/, << 'EOT' ], 'show-branch' );
+    [ split /\n/, << 'EOT' ], 'show_branch' );
 * [branch] hello
  ! [master] empty tree
 --
