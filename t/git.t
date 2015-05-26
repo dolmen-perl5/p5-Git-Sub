@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Requires::Git;
 use File::Temp qw( tempdir );
 use Cwd qw( cwd abs_path );
 use Git::Sub;
@@ -11,11 +12,15 @@ $ENV{GIT_AUTHOR_NAME}     = 'Test Author';
 $ENV{GIT_AUTHOR_EMAIL}    = 'test.author@example.com';
 $ENV{GIT_COMMITTER_NAME}  = 'Test Committer';
 $ENV{GIT_COMMITTER_EMAIL} = 'test.committer@example.com';
+
 my $home = cwd;
 my $dir = tempdir( CLEANUP => 1 );
 
 # need to be there to test
 chdir $dir;
+
+# we need git
+test_requires_git;
 
 # but go back home before removing the dir
 END { chdir $home; }
@@ -26,12 +31,10 @@ my %tested;
 my $git_version = eval {git::version};
 $tested{version}++;
 
-plan skip_all => 'Could not get a meaningful result from git::version'
-    if !$git_version;
-
 diag "Testing <$git_version>";
 
 # init a repository
+test_requires_git version_gt => '1.5.0.rc1';
 ok( !-d "$dir/.git", 'no repository yet' );
 git::init;
 ok( -d "$dir/.git", 'init' );
