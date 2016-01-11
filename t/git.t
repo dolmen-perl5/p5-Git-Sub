@@ -11,8 +11,16 @@ $ENV{GIT_AUTHOR_NAME}     = 'Test Author';
 $ENV{GIT_AUTHOR_EMAIL}    = 'test.author@example.com';
 $ENV{GIT_COMMITTER_NAME}  = 'Test Committer';
 $ENV{GIT_COMMITTER_EMAIL} = 'test.committer@example.com';
+my $keep_tempdir = ($ENV{SKIP_TEMPDIR_CLEANUP} ? 1 : 0);
 my $home = cwd;
-my $dir = tempdir( CLEANUP => 1 );
+my $dir = tempdir( qq{git-sub-XXXXXXXX}, TMPDIR => 1, CLEANUP => ($keep_tempdir ? 0 : 1));
+
+diag qq{\nTest directory created "$dir"\n};
+if ($keep_tempdir) {
+  diag qq{SKIP_TEMPDIR_CLEANUP is TRUE, keeping the temporary directory\n};
+} else {
+  diag qq{SKIP_TEMPDIR_CLEANUP not defined or FALSE, deleting the temporary directory\n};
+}
 
 # need to be there to test
 chdir $dir;
