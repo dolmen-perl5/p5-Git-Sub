@@ -40,14 +40,14 @@ plan skip_all => 'Could not get a meaningful result from git::version'
 diag "Testing <$git_version>";
 
 # init a repository
-ok( !-d "$dir/.git", 'no repository yet' );
+ok( !-d "$dir/.git", 'Verify no repository yet' );
 git::init;
-ok( -d "$dir/.git", 'init' );
+ok( -d "$dir/.git", '[init] Initialize repositry ' );
 $tested{init}++;
 
 # create the emptry tree
 my $tree = git::mktree( \'' );
-is( $tree, '4b825dc642cb6eb9a060e54bf8d69288fbee4904', 'mktree' );
+is( $tree, '4b825dc642cb6eb9a060e54bf8d69288fbee4904', '[mktree] Creating empty tree' );
 $tested{mktree}++;
 
 # commit it
@@ -55,7 +55,7 @@ $ENV{GIT_AUTHOR_DATE}    = 'Mon Jan 21 21:14:18 CET 2013';
 $ENV{GIT_COMMITTER_DATE} = 'Mon Jan 21 21:14:18 CET 2013';
 my $commit = git::commit_tree $tree, \'empty tree';
 $tested{commit_tree}++;
-is( $commit, '52870678501379ecd14277fad5e69961ce7bd39b', 'commit_tree' );
+is( $commit, '52870678501379ecd14277fad5e69961ce7bd39b', '[commit_tree] Committing empty tree' );
 
 # point master to it
 git::update_ref 'refs/heads/master', $commit;
@@ -63,16 +63,16 @@ $tested{update_ref}++;
 
 # check we got it right
 my $log = git::log qw( --pretty=format:%H -1 );
-is( $log, $commit, 'log' );
+is( $log, $commit, '[log] Verify commit tree' );
 
 $log = git::log qw( --pretty=format:%s -1 );
-is( $log, 'empty tree', 'log' );
+is( $log, 'empty tree', '[log] Verify empty tree' );
 
 # create a new branch
 git::checkout -b => 'branch';
 $tested{checkout}++;
 
-is_deeply( [git::branch], [ '* branch', '  master' ], 'branch' );
+is_deeply( [git::branch], [ '* branch', '  master' ], '[branch] Verify branch' );
 $tested{branch}++;
 
 # add a new file
@@ -81,12 +81,12 @@ print $fh "Hello, world!\n";
 close $fh;
 
 is_deeply( [ git::status '--porcelain' ],
-    ['?? hello.txt'], 'status --porcelain' );
+    ['?? hello.txt'], '[status --porcelain] Status with missing file' );
 $tested{status}++;
 git::add 'hello.txt';
 $tested{add}++;
 is_deeply( [ git::status '--porcelain' ],
-    ['A  hello.txt'], 'status --porcelain' );
+    ['A  hello.txt'], '[status --porcelain] Status with added file' );
 $tested{status}++;
 
 # and commit it
@@ -96,7 +96,7 @@ git::commit -m => 'hello';
 $tested{commit}++;
 $commit = git::log qw( -1 --pretty=format:%H );
 $tested{log}++;
-is( $commit, 'b462686c994180efe7fcf5e4e682907834c93f38', 'log' );
+is( $commit, 'b462686c994180efe7fcf5e4e682907834c93f38', '[log] Verify commit' );
 
 # check an unsupported command
 use Git::Sub 'show_branch';
