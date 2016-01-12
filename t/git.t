@@ -111,7 +111,7 @@ is_deeply(
 EOT
 
 is_deeply(
-    [ git::cat_file commit => 'b462686c994180efe7fcf5e4e682907834c93f38' ],
+    [ git::cat_file commit => $commit ],
     [ split /\n/, << 'EOT' ], 'cat_file' );
 tree ec947e3dd7a7752d078f1ed0cfde7457b21fef58
 parent 52870678501379ecd14277fad5e69961ce7bd39b
