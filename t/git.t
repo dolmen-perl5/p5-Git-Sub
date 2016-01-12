@@ -77,6 +77,10 @@ $tested{branch}++;
 
 # add a new file
 open my $fh, '>', 'hello.txt';
+# In order to avoid translating \n to \r\n on MsWin text files, use binmode()
+# If binmode is not used, the hash created for the commit of the text file
+# will be different and cause subsequent tests to fail
+binmode $fh;
 print $fh "Hello, world!\n";
 close $fh;
 
