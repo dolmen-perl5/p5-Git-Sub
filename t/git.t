@@ -106,7 +106,7 @@ is( $commit, 'b462686c994180efe7fcf5e4e682907834c93f38', '[log] Verify commit' )
 use Git::Sub 'show_branch';
 is_deeply(
     [ git::show_branch '--all' ],
-    [ split /\n/, << 'EOT' ], 'show-branch' );
+    [ split /\n/, << 'EOT' ], qq{[show-branch] Verify output of show_branch} );
 * [branch] hello
  ! [master] empty tree
 --
@@ -116,7 +116,7 @@ EOT
 
 is_deeply(
     [ git::cat_file commit => $commit ],
-    [ split /\n/, << 'EOT' ], 'cat_file' );
+    [ split /\n/, << 'EOT' ], qq{[cat-file] Verify output of cat_file} );
 tree ec947e3dd7a7752d078f1ed0cfde7457b21fef58
 parent 52870678501379ecd14277fad5e69961ce7bd39b
 author Test Author <test.author@example.com> 1358799259 +0100
@@ -126,10 +126,10 @@ hello
 EOT
 $tested{cat_file}++;
 
-is_deeply( [ git::ls_tree 'master' ], [], 'ls_tree' );
+is_deeply( [ git::ls_tree 'master' ], [], qq{[ls_tree] Verify ls of "master"} );
 is_deeply( [ git::ls_tree 'branch' ],
     ["100644 blob af5626b4a114abcb82d63db7c8082c3c4756e51b\thello.txt"],
-    'ls_tree' );
+    qq{[ls_tree] Verify ls of "branch"} );
 
 # inform us about untested commands
 diag "Not tested: ", join ' ', sort grep !exists $tested{$_},
