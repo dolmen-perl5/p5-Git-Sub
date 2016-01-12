@@ -1,7 +1,8 @@
 Revision history for System-Sub.
 
 {{$NEXT}}
-
+	Updated tests to allow tests to pass on MsWin32 platform
+	
 0.130270     2013-01-27    DOLMEN (Olivier Mengué)
 	Added 'Changes' file.
 	Added tests created by BOOK. Thanks!
