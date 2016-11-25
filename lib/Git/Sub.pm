@@ -61,10 +61,11 @@ use subs
 sub AUTOLOAD
 {
     my $git_cmd = our $AUTOLOAD;
-    $git_cmd = substr($git_cmd, 1+rindex($git_cmd, ':'));
+    my $git_sub = $git_cmd = substr($git_cmd, 1+rindex($git_cmd, ':'));
     $git_cmd =~ tr/_/-/; # Seems to the first time I use tr// in the last 2 years
     $GIT ||= File::Which::which('git');
 
+    delete $git::{$git_sub};
     System::Sub->import($AUTOLOAD, [
 	'$0' => $GIT,
 	'@ARGV' => [ $git_cmd ],
