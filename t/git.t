@@ -72,7 +72,7 @@ is( $log, 'empty tree', '[log] Verify empty tree' );
 git::checkout -b => 'branch';
 $tested{checkout}++;
 
-is_deeply( [git::branch], [ '* branch', '  master' ], '[branch] Verify branch' );
+is_deeply( [ git::branch qw( --no-color ) ], [ '* branch', '  master' ], '[branch] Verify branch' );
 $tested{branch}++;
 
 # add a new file
@@ -105,7 +105,7 @@ is( $commit, 'b462686c994180efe7fcf5e4e682907834c93f38', '[log] Verify commit' )
 # check an unsupported command
 use Git::Sub 'show_branch';
 is_deeply(
-    [ git::show_branch '--all' ],
+    [ git::show_branch qw( --all --no-color ) ],
     [ split /\n/, << 'EOT' ], qq{[show-branch] Verify output of show_branch} );
 * [branch] hello
  ! [master] empty tree
